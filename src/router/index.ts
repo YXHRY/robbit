@@ -2,6 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  // 路由行为配置项
+  scrollBehavior(){
+    return{top:0}
+  },
   routes: [
     {
       path: '/login',
@@ -17,6 +21,13 @@ const router = createRouter({
         }, {
           path: 'category/:id',//params参数
           component: () => import('@/views/Category/index.vue'),
+        },{
+          path:'category/sub/:id',
+          component:()=> import('@/views/SubCategory/index.vue'),
+        },{
+          path:'detail/:id',
+          component:()=>import('@/views/Detail/index.vue')
+
         }
       ]
     }

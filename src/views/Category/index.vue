@@ -1,36 +1,15 @@
 <script setup>
 import GoodsItem from '../Home/components/GoodsItem.vue';
-import {getCategoryAPI} from '@/apis/category'
 
-import { onMounted,toRefs,ref,onUpdated,watch} from 'vue';
+
+import { onMounted, toRefs, ref, onUpdated, watch } from 'vue';
 import { onBeforeRouteUpdate, useRoute } from 'vue-router';
-import {getBannerAPI} from '@/apis/home'
+import {useCategory} from './composables/useCategory';
+import useBanner from './composables/useBanner';
+const route = useRoute()
+const { categoryData } = useCategory()
+const { bannerList } = useBanner()
 
-const route=useRoute()
-// console.log(params.value)
-const categoryData=ref({})
-const getCategory=async()=>{
- const res= await getCategoryAPI(route.params.id)
- console.log(res)
- categoryData.value=res.result
-}
-
-const bannerList=ref([])
-const getBanner=async ()=>{
-    const res= await getBannerAPI('2')
-    console.log(res)
-    bannerList.value=res.result
-}
-onMounted(()=>{
-  getCategory()
-  getBanner()
-})
-watch(()=>route.params.id,()=>{
-  getCategory()
-})
-// onBeforeRouteUpdate(()=>{加个to参数，to为最新的route对象
-//   getCategory()//拿不到最新的route.params
-// })
 </script>
 
 <template>
@@ -44,31 +23,31 @@ watch(()=>route.params.id,()=>{
         </el-breadcrumb>
       </div>
       <div class="home-banner">
-    <el-carousel height="500px">
-      <el-carousel-item v-for="item in bannerList" :key="item.id">
-        <img v-img-lazy="item.imgUrl" alt="">
-      </el-carousel-item>
-    </el-carousel>
-  </div>
-  <div class="sub-list">
-  <h3>全部分类</h3>
-  <ul>
-    <li v-for="i in categoryData.children" :key="i.id">
-      <RouterLink to="/">
-        <img v-img-lazy="i.picture" />
-        <p>{{ i.name }}</p>
-      </RouterLink>
-    </li>
-  </ul>
-</div>
-<div class="ref-goods" v-for="item in categoryData.children" :key="item.id">
-  <div class="head">
-    <h3>- {{ item.name }}-</h3>
-  </div>
-  <div class="body">
-    <GoodsItem v-for="good in item.goods" :good="good" :key="good.id" />
-  </div>
-</div>
+        <el-carousel height="500px">
+          <el-carousel-item v-for="item in bannerList" :key="item.id">
+            <img v-img-lazy="item.imgUrl" alt="">
+          </el-carousel-item>
+        </el-carousel>
+      </div>
+      <div class="sub-list">
+        <h3>全部分类</h3>
+        <ul>
+          <li v-for="i in categoryData.children" :key="i.id">
+            <RouterLink :to="`/category/sub/${i.id}`">
+              <img v-img-lazy="i.picture" />
+              <p>{{ i.name }}</p>
+            </RouterLink>
+          </li>
+        </ul>
+      </div>
+      <div class="ref-goods" v-for="item in categoryData.children" :key="item.id">
+        <div class="head">
+          <h3>- {{ item.name }}-</h3>
+        </div>
+        <div class="body">
+          <GoodsItem v-for="good in item.goods" :good="good" :key="good.id" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -152,10 +131,12 @@ watch(()=>route.params.id,()=>{
     padding: 25px 0;
   }
 }
+
 .home-banner {
   width: 1240px;
   height: 500px;
   margin: 0 auto;
+
   img {
     width: 100%;
     height: 500px;
