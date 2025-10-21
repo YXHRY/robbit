@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {onMounted, ref} from 'vue'
 import { useScroll } from '@vueuse/core'
-import { useCategoryStore } from '@/stores/category'
+import { useCategoryStore } from '@/stores/categoryStore'
 const { y } = useScroll(window)
 const categoryStore=useCategoryStore()
 

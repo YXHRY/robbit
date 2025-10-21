@@ -13,10 +13,21 @@ declare module 'vue' {
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCarousel: typeof import('element-plus/es')['ElCarousel']
     ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
+    ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
+    ElEmpty: typeof import('element-plus/es')['ElEmpty']
+    ElForm: typeof import('element-plus/es')['ElForm']
+    ElFormItem: typeof import('element-plus/es')['ElFormItem']
+    ElInput: typeof import('element-plus/es')['ElInput']
+    ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
     ElPopconfirm: typeof import('element-plus/es')['ElPopconfirm']
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElTabs: typeof import('element-plus/es')['ElTabs']
     ImageView: typeof import('./src/components/imageView/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     XtxSku: typeof import('./src/components/XtxSku/index.vue')['default']
+  }
+  export interface GlobalDirectives {
+    vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
   }
 }

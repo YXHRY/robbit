@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import getCategoryAPI from '@/apis/layout.ts'
 import { onMounted, reactive,ref } from 'vue'
-import { useCategoryStore } from '@/stores/category';
+import { useCategoryStore } from '@/stores/categoryStore';
+import HeaderCart from './HeaderCart.vue';
 const categoryStore =useCategoryStore()
 </script>
 
@@ -22,7 +23,7 @@ const categoryStore =useCategoryStore()
         <input type="text" placeholder="搜一搜">
       </div>
       <!-- 头部购物车 -->
-      
+      <header-cart/>
     </div>
   </header>
 </template>

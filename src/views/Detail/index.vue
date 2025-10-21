@@ -3,16 +3,47 @@ import { getDetail } from '@/apis/detail'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import DetailHot from './components/DetailHot.vue'
+import { ElMessage } from 'element-plus'
+import { useCartStore } from '@/stores/cartStore'
 const goods = ref({})
 const route = useRoute()
+const cartStore=useCartStore()
 const getGoods = async () => {
   const res = await getDetail(route.params.id)
   goods.value = res.result
   console.log(goods.value)
 }
 onMounted(() => getGoods())
+let skuObj={}
 const skuChange=(sku)=>{
-  console.log(sku)
+  // console.log(sku)
+  skuObj=sku
+}
+const count=ref(0)
+const countChange=(count)=>{
+console.log(count)
+}
+const addCart=()=>{
+  console.log("购物车")
+if(skuObj.skuId){
+  cartStore.addCart({
+    id:goods.value.id,
+    name:goods.value.name,
+    picture:goods.value.mainPictures[0],
+    price:goods.value.price,
+    count:count.value,
+    skuId:skuObj.skuId,
+    attrsText:skuObj.specsText,
+    selected:true
+  })
+}else{
+  // ElMessage.warning('请将规格选完整')
+  ElMessage({
+  type: 'warning',
+  message: '请将规格选完整'
+}) 
+  console.log('2')
+}
 }
 </script>
 
@@ -29,7 +60,7 @@ const skuChange=(sku)=>{
           </el-breadcrumb-item>
           <el-breadcrumb-item :to="{ path: `/category/sub/${goods.categories?.[0].id}` }">{{ goods.categories?.[0].name }}
           </el-breadcrumb-item>
-          <el-breadcrumb-item>抓绒保暖，毛毛虫子儿童运动鞋</el-breadcrumb-item>
+          <el-breadcrumb-item>{{ goods.name }}</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
       <!-- 商品信息 -->
@@ -89,10 +120,10 @@ const skuChange=(sku)=>{
               <!-- sku组件 -->
               <XtxSku :goods="goods" @change="skuChange"/>
               <!-- 数据组件 -->
-
+              <el-input-number v-model="count" :min="1" :max="10" @change="countChange"/>
               <!-- 按钮组件 -->
               <div>
-                <el-button size="large" class="btn">
+                <el-button size="large" class="btn" @click="addCart">
                   加入购物车
                 </el-button>
               </div>
